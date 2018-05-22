@@ -6,6 +6,7 @@ import android.media.session.MediaSession
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.media.AudioAttributesCompat
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.session.MediaSessionCompat
 import com.google.android.exoplayer2.ExoPlayer
@@ -90,7 +91,12 @@ class PlayerHolder(val context: Context, private val playerView: PlayerView, val
     val player: ExoPlayer
 
     init {
-        player = ExoPlayerFactory.newSimpleInstance(context, DefaultTrackSelector())
+        val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        val audioAttributes = AudioAttributesCompat.Builder()
+                .setContentType((AudioAttributesCompat.CONTENT_TYPE_MUSIC))
+                .setUsage(AudioAttributesCompat.USAGE_MEDIA).build()
+        player = AudioFocusWrapper( audioAttributes, audioManager,
+                    ExoPlayerFactory.newSimpleInstance(context, DefaultTrackSelector()) )
         playerView.player = player
     }
 
