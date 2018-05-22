@@ -6,15 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.google.android.exoplayer2.ui.PlayerView
-        android:id="@+id/exoplayerview_activity_video"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxHeight="180dp"
-        app:use_artwork="true"
-        app:show_timeout="3000"
-        app:fastforward_increment="30000"
-        app:rewind_increment="30000"
-        app:controller_layout_id="@layout/player_controller_ui"
-        />
+        android:maxHeight="180dp">
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/exoplayerview_activity_video"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:use_artwork="true"
+            app:show_timeout="3000"
+            app:fastforward_increment="30000"
+            app:rewind_increment="30000"
+            app:controller_layout_id="@layout/player_controller_ui"
+            />
+
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>
