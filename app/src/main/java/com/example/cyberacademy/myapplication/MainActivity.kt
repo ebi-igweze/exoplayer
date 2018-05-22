@@ -10,11 +10,12 @@ import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.util.Util
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var playerHolder: PlayerHolder
-    val state = PlayerState()
+    private val state = PlayerState()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,23 +43,25 @@ class MainActivity : AppCompatActivity() {
 
 data class PlayerState(var window: Int = 0, var position: Long = 0, var whenReady: Boolean = true)
 
-class PlayerHolder(val context: Context, val playerView: PlayerView, val playerState: PlayerState) {
+class PlayerHolder(val context: Context, private val playerView: PlayerView, val playerState: PlayerState) {
 
-    val player: ExoPlayer
+    private val player: ExoPlayer
 
     init {
         player = ExoPlayerFactory.newSimpleInstance(context, DefaultTrackSelector())
-                .also {
-                    playerView.player = it
-                }
+        playerView.player = player
     }
 
     fun start() {
         // parse uri
-        val uri = Uri.parse("asset:///video/file.mp3")
+        val uri = Uri.parse("http://ftp.nluug.nl/pub/graphics/blender/demo/movies/ToS/ToS-4k-1920.mov")
+
+        // user agent string
+        val userAgent  = Util.getUserAgent(context, "ExoPlayer")
+
         // build media source
         val mediaSource = ExtractorMediaSource
-                .Factory(DefaultDataSourceFactory(context, "videoApp"))
+                .Factory(DefaultDataSourceFactory(context, userAgent))
                 .createMediaSource(uri)
 
         // Load Media
